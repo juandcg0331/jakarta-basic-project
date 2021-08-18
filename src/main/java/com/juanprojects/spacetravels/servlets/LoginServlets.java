@@ -21,6 +21,8 @@ public class LoginServlets extends HttpServlet {
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
 
+        System.out.println("Usuario: "+ userName + "Contraseña :"+ password);
+
         if (userName.equals(userLogin) && password.equals(passwordLogin)){
             System.out.println("Loggin exitoso");
             String nombre = "Juan Diego Cagua Gutierrez";

@@ -7,7 +7,6 @@ public class User {
     }
 
     public User(int id, String nombre, String apellidos, String usuario, String contrasenia, String email, String telefono, boolean activo) {
-        System.out.println("Creando un nuevo objeto de constructor sobre cargado");
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
