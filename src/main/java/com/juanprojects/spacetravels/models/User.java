@@ -6,8 +6,7 @@ public class User {
         System.out.println("Creando un nuevo usuario");
     }
 
-    public User(int id, String nombre, String apellidos, String usuario, String contrasenia, String email, String telefono, boolean activo) {
-        this.id = id;
+    public User( String nombre, String apellidos, String usuario, String contrasenia, String email, String telefono, boolean activo) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.usuario = usuario;
