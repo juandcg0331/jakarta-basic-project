@@ -20,38 +20,22 @@ public class NuevoUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            String nombre = req.getParameter("nombre");
-            String apellidos = req.getParameter("apellidos");
-            String usuario = req.getParameter("usuario");
-            String contrasenia = req.getParameter("contrasenia");
-            String email = req.getParameter("email");
-            String telefono = req.getParameter("telefono");
-
+            User userNew = new User();
+            userNew.nombre = req.getParameter("nombre");
+            userNew.usuario = req.getParameter("usuario");
+            userNew.apellidos = req.getParameter("apellidos");
+            userNew.contrasenia = req.getParameter("contrasenia");
+            userNew.email = req.getParameter("email");
+            userNew.telefono = req.getParameter("telefono");
             // Validación de campos de formulario
-            if (nombre.length() > 0 && apellidos.length() > 0 && usuario.length() > 0
-            && contrasenia.length() > 0 && email.length() > 0 && telefono.length() > 0) {
+            if (userNew.nombre.length() > 0 && userNew.apellidos.length() > 0 && userNew.usuario.length() > 0
+            && userNew.contrasenia.length() > 0 && userNew.email.length() > 0 && userNew.telefono.length() > 0) {
                 System.out.println("Validación exitosa");
-                User userCreated = new User( nombre, apellidos,usuario,contrasenia,email,telefono,true);
-                System.out.println(userCreated.toString());
 
-                DBConnectionMySQL connectionMySQL = new DBConnectionMySQL();
-                Connection connection = connectionMySQL.getConnection();
-                //DBConnectionOracleDB dbConnectionOracleDB = new DBConnectionOracleDB();
-                //Connection connection = dbConnectionOracleDB.getConnection();
-                Statement statement = null;
-                try {
-                    statement = connection.createStatement();
-                    String sqlInsert = "INSERT INTO spacetravel.Usuario(nombre, apellidos, usuario, password, email, telefono)" +
-                            "VALUES('"+userCreated.nombre+"','"+userCreated.apellidos+"','"+userCreated.usuario+"'," +
-                            "'"+userCreated.contrasenia+"','"+userCreated.email+"','"+userCreated.telefono+"')";
-                    int valorRespuesta = statement.executeUpdate(sqlInsert);
-                    System.out.println("Valor respuesta: "+ valorRespuesta);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                req.setAttribute("nombre", userCreated.nombre);
-                req.setAttribute("usuarioCreated", userCreated);
+                userNew.crearUsuario();
+                System.out.println("El nuevo usuario es: "+ userNew.toString());
+                req.setAttribute("nombre", userNew.nombre);
+                req.setAttribute("usuarioCreated:", userNew.toString());
 
                 RequestDispatcher rd = req.getRequestDispatcher("welcome.jsp");
                 rd.forward(req, resp);

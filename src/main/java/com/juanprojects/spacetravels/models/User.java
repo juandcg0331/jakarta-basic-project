@@ -1,5 +1,12 @@
 package com.juanprojects.spacetravels.models;
 
+import com.juanprojects.spacetravels.basededatos.DBConnectionMySQL;
+import com.juanprojects.spacetravels.mail.MailSpaceTravels;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class User {
 
     public User(){
@@ -25,8 +32,34 @@ public class User {
     public String telefono;
     public boolean activo;
 
-    public boolean crearUsuario(User usuario){
-        return false;
+    public boolean crearUsuario(){
+        boolean returnValue = false;
+        DBConnectionMySQL connectionMySQL = new DBConnectionMySQL();
+        Connection connection = connectionMySQL.getConnection();
+        //DBConnectionOracleDB dbConnectionOracleDB = new DBConnectionOracleDB();
+        //Connection connection = dbConnectionOracleDB.getConnection();
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            String sqlInsert = "INSERT INTO spacetravel.Usuario(nombre, apellidos, usuario, password, email, telefono)" +
+                    "VALUES('"+nombre+"','"+apellidos+"','"+usuario+"'," +
+                    "'"+contrasenia+"','"+email+"','"+telefono+"')";
+            int valorRespuesta = statement.executeUpdate(sqlInsert);
+            if (valorRespuesta > 0){
+                returnValue = true;
+            }else{
+                returnValue = false;
+            }
+
+            System.out.println("Valor respuesta: "+ valorRespuesta);
+            MailSpaceTravels mailSpaceTravels = new MailSpaceTravels();
+            mailSpaceTravels.sendMail(email);
+        } catch (Exception e) {
+            returnValue = false;
+            e.printStackTrace();
+
+        }
+        return returnValue;
     }
 
     public User buscarUsuario(String nameUser){
